@@ -12,3 +12,34 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum Anyag {
+  Wood
+  Metal
+  Plastic
+  Other
+}
+
+model Jatek {
+  id Int @default(autoincrement()) @id
+  megnevezes String
+  anyag Anyag
+  suly Float
+  gyerekek Keresek[]
+}
+
+model Gyerek {
+  id Int @default(autoincrement()) @id
+  nev String
+  pontosCim String
+  jo Boolean
+  jatekok Keresek[]
+}
+model Keresek {
+  jatek Jatek @relation(fields: [jatekId], references: [id])
+  jatekId Int
+  gyerek Gyerek @relation(fields: [gyerekId], references: [id])
+  gyerekId Int
+
+  @@id([jatekId, gyerekId])
+}
