@@ -29,6 +29,32 @@ export class GyerekekService {
     })
     return query
   }
+  async addToyToChild(childID: number, toyID: number) {
+    /*await this.db.gyerek.update({
+      where: {
+        id: childID
+      },
+      data: {
+        jatekok: {
+          connect: {
+            jatekId_gyerekId: {
+              gyerekId: childID,
+              jatekId: toyID
+            }
+          }
+        }
+      }
+    })*/
+    await this.db.keresek.create({
+      data: {
+
+        gyerekId: childID,
+
+        jatekId: toyID
+      }
+    })
+    return "Hozzáadva"
+  }
 
   async update(id: number, updateGyerekekDto: UpdateGyerekekDto) {
     await this.db.gyerek.update({

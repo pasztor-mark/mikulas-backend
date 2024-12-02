@@ -23,7 +23,7 @@ enum Anyag {
 model Jatek {
   id Int @default(autoincrement()) @id
   megnevezes String
-  anyag Anyag
+  anyag Anyag @default(Other)
   suly Float
   gyerekek Keresek[]
 }
