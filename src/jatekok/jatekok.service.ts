@@ -30,12 +30,13 @@ export class JatekokService {
   }
 
   async update(id: number, updateJatekokDto: UpdateJatekokDto) {
-    await this.db.jatek.update({
+    return await this.db.jatek.update({
       where: {
         id
       },
       data: updateJatekokDto
     })
+    
   }
 
   async remove(id: number) {

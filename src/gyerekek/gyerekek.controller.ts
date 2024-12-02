@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, NotFoundException } from '@nestjs/common';
 import { GyerekekService } from './gyerekek.service';
 import { CreateGyerekekDto } from './dto/create-gyerekek.dto';
 import { UpdateGyerekekDto } from './dto/update-gyerekek.dto';
@@ -22,17 +22,30 @@ export class GyerekekController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.gyerekekService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const gyerek = await this.gyerekekService.findOne(+id);
+    
+    if (!gyerek) {
+      throw new NotFoundException
+    }
+    return gyerek
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGyerekekDto: UpdateGyerekekDto) {
-    return this.gyerekekService.update(+id, updateGyerekekDto);
+  async update(@Param('id') id: string, @Body() updateGyerekekDto: UpdateGyerekekDto) {
+    const gyerek = await this.gyerekekService.update(+id, updateGyerekekDto);
+    if (!gyerek) {
+      throw new NotFoundException
+    }
+    return gyerek
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.gyerekekService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const gyerek = await this.gyerekekService.remove(+id);
+    if (!gyerek) {
+      throw new NotFoundException
+    }
+    return gyerek
   }
 }
