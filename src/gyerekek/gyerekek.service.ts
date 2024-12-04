@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGyerekekDto } from './dto/create-gyerekek.dto';
 import { UpdateGyerekekDto } from './dto/update-gyerekek.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -17,7 +17,11 @@ export class GyerekekService {
   }
 
   async findAll() {
-    const query = await this.db.gyerek.findMany()
+    const query = await this.db.gyerek.findMany({
+      include: {
+        jatekok: true
+      }
+    })
     return query
   }
 
@@ -54,6 +58,22 @@ export class GyerekekService {
       }
     })
     return "Hozzáadva"
+  }
+  async removeToyFromChild(childId: number, toyId: number) {
+    try {
+      await this.db.keresek.delete({
+        where: {
+          jatekId_gyerekId: {
+            gyerekId: childId,
+            jatekId: toyId
+          }
+        }
+      })
+    } catch(_err: unknown) {
+      console.log(_err)
+      throw new NotFoundException
+    }
+    return `#${childId} gyerektől törölve a #${toyId} játék.`
   }
 
   async update(id: number, updateGyerekekDto: UpdateGyerekekDto) {

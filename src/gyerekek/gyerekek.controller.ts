@@ -15,6 +15,10 @@ export class GyerekekController {
   addToyToChild(@Param('gyerekId') gyerekId: string, @Param('jatekId') jatekId: string) {
     return this.gyerekekService.addToyToChild(+gyerekId, +jatekId);
   }
+  @Delete(':gyerekId/jatekok/:jatekId')
+  removeToyFromChild(@Param('gyerekId') gyerekId: string, @Param('jatekId') jatekId: string) {
+    return this.gyerekekService.removeToyFromChild(+gyerekId, +jatekId)
+  }
 
   @Get()
   findAll() {

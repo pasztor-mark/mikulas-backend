@@ -1,5 +1,6 @@
 import { IsString, Max, MaxLength, Min, MinLength } from "class-validator"
 
+
 export class CreateJatekokDto {
   @IsString()
   @MinLength(2)
