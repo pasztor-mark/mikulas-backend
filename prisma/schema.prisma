@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,25 +15,28 @@ enum Anyag {
 }
 
 model Jatek {
-  id Int @default(autoincrement()) @id
-  megnevezes String
-  anyag Anyag @default(Other)
-  suly Float
-  gyerekek Keresek[]
+  id          Int        @default(autoincrement()) @id
+  megnevezes  String
+  anyag       Anyag      @default(Other)
+  suly        Float
+  keresek     Keresek[]
 }
 
 model Gyerek {
-  id Int @default(autoincrement()) @id
-  nev String
-  pontosCim String
-  jo Boolean
-  jatekok Keresek[]
+  id          Int        @default(autoincrement()) @id
+  nev         String
+  pontosCim   String
+  jo          Boolean
+  keresek     Keresek[]
 }
+
 model Keresek {
-  jatek Jatek @relation(fields: [jatekId], references: [id])
-  jatekId Int
-  gyerek Gyerek @relation(fields: [gyerekId], references: [id])
-  gyerekId Int
+  jatek       Jatek      @relation(fields: [jatekId], references: [id], onDelete: Cascade)
+  jatekId     Int
+  gyerek      Gyerek     @relation(fields: [gyerekId], references: [id])
+  gyerekId    Int
 
   @@id([jatekId, gyerekId])
+  @@unique([gyerekId])
+  @@unique([jatekId])
 }

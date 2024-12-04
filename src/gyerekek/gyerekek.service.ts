@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGyerekekDto } from './dto/create-gyerekek.dto';
 import { UpdateGyerekekDto } from './dto/update-gyerekek.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -49,6 +49,14 @@ export class GyerekekService {
         }
       }
     })*/
+   const child = await this.db.gyerek.findFirst({
+    where: {
+      id: childID
+    }
+   })
+   if (!child.jo) {
+    throw new ConflictException
+   }
     await this.db.keresek.create({
       data: {
 
